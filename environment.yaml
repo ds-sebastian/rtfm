@@ -1,0 +1,32 @@
+name: comma-chat
+channels:
+  - nvidia
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pytorch
+  - torchvision
+  - torchaudio
+  - langchain
+  - openai
+  - cudatoolkit
+  - pytorch-cuda=12.1
+  # - sentence-transformers
+  # - faiss-gpu
+  - python-dotenv
+  - tiktoken
+  - numpy
+  - pandas
+  - scikit-learn
+  - nltk
+  - spacy
+  - jupyter
+  - pip
+  - streamlit
+  - pip:
+    - langchain-openai
+    - psycopg2-binary
+    - pgvecto_rs[sdk]
+
