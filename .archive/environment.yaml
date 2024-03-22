@@ -19,6 +19,7 @@ dependencies:
   - tiktoken
   - numpy
   - pandas
+  - pydantic
   - scikit-learn
   - nltk
   - spacy

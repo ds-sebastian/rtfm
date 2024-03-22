@@ -99,10 +99,9 @@ def setup_retriever(texts):
 
 def setup_qa_chain(_retriever, model_name=MODELS[0]):
     model = ChatOpenAI(model=model_name, base_url=API_URL, api_key=API_KEY)
-    qa = ConversationalRetrievalChain.from_llm(
+    return ConversationalRetrievalChain.from_llm(
         model, retriever=_retriever, return_source_documents=True
     )
-    return qa
 
 
 def reset_session_data():
@@ -113,31 +112,33 @@ def reset_session_data():
 
 def preprocess_data():
     with st.status("Preprocessing Data..."):
-        # Reset Session
-        reset_session_data()
-
-        st.write("Downloading documents from ReadTheDocs...")
-        readthedocs_url = st.session_state["readthedocs_url"]
-        download_readthedocs(readthedocs_url)
-
-        st.write("Loading documents from ReadTheDocs...")
-        readthedocs_dir = "rtdocs"
-        readthedocs_docs = load_readthedocs(readthedocs_dir)
-
-        st.write("Splitting documents...")
-        chunk_size = st.session_state["chunk_size"]
-        chunk_overlap = st.session_state["chunk_overlap"]
-        texts = split_documents(readthedocs_docs, chunk_size, chunk_overlap)
-
-        st.write("Setting up retriever...")
-        retriever = setup_retriever(texts)
-
-        st.write("Setting up QA chain...")
-        qa = setup_qa_chain(retriever, st.session_state["openai_model"])
-
+        qa = _extracted_from_preprocess_data()
     st.sidebar.success("Preprocessing completed successfully!")
     st.rerun()  # Refresh the page to update the UI
     return qa
+
+
+# TODO Rename this here and in `preprocess_data`
+def _extracted_from_preprocess_data():
+    reset_session_data()
+
+    st.write("Downloading documents from ReadTheDocs...")
+    readthedocs_url = st.session_state["readthedocs_url"]
+    download_readthedocs(readthedocs_url)
+
+    st.write("Loading documents from ReadTheDocs...")
+    readthedocs_docs = load_readthedocs("rtdocs")
+
+    st.write("Splitting documents...")
+    chunk_size = st.session_state["chunk_size"]
+    chunk_overlap = st.session_state["chunk_overlap"]
+    texts = split_documents(readthedocs_docs, chunk_size, chunk_overlap)
+
+    st.write("Setting up retriever...")
+    retriever = setup_retriever(texts)
+
+    st.write("Setting up QA chain...")
+    return setup_qa_chain(retriever, st.session_state["openai_model"])
 
 
 def main():
@@ -211,9 +212,7 @@ def main():
         with st.chat_message(message[0]):
             st.markdown(message[1])
 
-    # Accept user input
-    question = st.chat_input("Ask a question about the Docs:")
-    if question:
+    if question := st.chat_input("Ask a question about the Docs:"):
         # Add user message to chat history
         st.session_state.chat_history.append(("user", question))
 
