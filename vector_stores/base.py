@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class BaseVectorStore(ABC):
     @abstractmethod
-    def from_documents(self, embedding, documents, **kwargs):
+    def store_embeddings(self, embedding, documents, **kwargs):
         pass
 
     @abstractmethod

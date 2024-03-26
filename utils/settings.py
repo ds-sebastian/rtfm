@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     distance_metric: str = "cos"
     fetch_k: int = 100
     k: int = 4
-    openai_model: str = "gpt-3.5-turbo"
+    model_name: str = "gpt-3.5-turbo"
     qa_model: str = "openai"
 
 

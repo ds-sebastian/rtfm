@@ -4,7 +4,7 @@ from .base import BaseVectorStore
 
 
 class PGVectorStore(BaseVectorStore):
-    def from_documents(self, embedding, documents, **kwargs):
+    def store_embeddings(self, embedding, documents, **kwargs):
         return PGVecto_rs.from_documents(
             embedding=embedding, documents=documents, **kwargs
         )

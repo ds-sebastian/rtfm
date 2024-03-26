@@ -15,13 +15,3 @@ def display_question_input():
 def display_assistant_response(response):
     with st.chat_message("assistant"):
         st.markdown(response)
-
-
-def display_references(references):
-    with st.sidebar.popover("References"):
-        for reference in references:
-            source = reference.metadata["source"]
-            page_content = reference.page_content
-
-            st.caption(f"**{source}**")
-            st.code(page_content)

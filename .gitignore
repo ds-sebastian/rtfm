@@ -1,7 +1,8 @@
 # Custom
 rtdocs/
 data/*
-
+pyrightconfig.json
+print_code.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
