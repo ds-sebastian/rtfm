@@ -3,6 +3,7 @@ rtdocs/
 data/*
 pyrightconfig.json
 print_code.sh
+cache/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
