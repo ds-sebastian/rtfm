@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     data_loader: str = "readthedocs"
     vector_store: str = "pgvecto_rs"  # Add this line
-    readthedocs_url: str = "https://docs.comma.ai/"
+    url_input: str = "https://docs.comma.ai/"
     chunk_size: int = 4000
     chunk_overlap: int = 0
     distance_metric: str = "cos"

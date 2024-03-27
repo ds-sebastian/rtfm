@@ -4,9 +4,14 @@ from .base import BaseVectorStore
 
 
 class PGVectorStore(BaseVectorStore):
-    def store_embeddings(self, embedding, documents, **kwargs):
+    def store_embeddings(
+        self, embedding, documents, pre_delete_collection=True, **kwargs
+    ):
         return PGVecto_rs.from_documents(
-            embedding=embedding, documents=documents, **kwargs
+            embedding=embedding,
+            documents=documents,
+            pre_delete_collection=pre_delete_collection,
+            **kwargs,
         )
 
     def from_collection_name(self, embedding, collection_name, **kwargs):
