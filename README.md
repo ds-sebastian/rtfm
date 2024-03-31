@@ -2,6 +2,12 @@
 
 RTFM is a modular web application that uses Retrieval Augmented Generation (RAG) to enable interactive question-answering based on a given data source. The app alleows users to provide a link to a data source (such as a ReadTheDocs website or a GitHub repository), which is then loaded into a vector database for efficient similarity search. Users can ask questions related to the loaded data, and the app retrieves relevant references from the vector database and sends them to a configured language model (LLM) to generate informative answers.
 
+
+
+<img width="1425" alt="image" src="https://github.com/ds-sebastian/rtfm/assets/69488704/45142619-aaf9-47e7-83e5-8240c7ecd19d">
+
+
+
 ## Features
 
 - Modular architecture allowing easy integration of different databases, models, and data loaders through plugin-style `.py` files
