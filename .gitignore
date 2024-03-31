@@ -1,9 +1,11 @@
 # Custom
 rtdocs/
-data/*
 pyrightconfig.json
 print_code.sh
-cache/
+data/*
+cache/*
+!data/.gitkeep
+!cache/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
