@@ -41,19 +41,20 @@ def process_question(question):
             st.warning(
                 "Data not loaded. Please click 'Load Data' before asking a question."
             )
-            return None, None
+            return None, ""
         else:
             result = qa(
                 {"question": question, "chat_history": st.session_state.chat_history}
             )
-            response = result["answer"]
+            answer = result["answer"]
             references = result["source_documents"]
-            return response, references
+
+            return references, answer
 
     except Exception as e:
         logger.error(f"Error processing question: {e}")
         st.error("An error occurred while processing the question. Please try again.")
-        return None, None
+        return None, ""
 
 
 def main():
@@ -73,13 +74,15 @@ def main():
     question = st.chat_input("Ask a question about the Docs:", key="question_input")
 
     if question:
-        response, references = process_question(question)
-        if response is not None and references is not None:
-            st.session_state.chat_history.append(("user", question))
-            st.session_state.chat_history.append(("assistant", response))
+        st.session_state.chat_history.append(("user", question))
+        ui.display_user_message(question)
+
+        references, answer = process_question(question)
+
+        if references is not None:
+            st.session_state.chat_history.append(("assistant", answer))
             st.session_state.references = references
-            ui.display_user_message(question)
-            ui.display_assistant_response(response)
+            ui.display_assistant_response(answer)
             st.rerun()  # Trigger a rerun of the app
 
 

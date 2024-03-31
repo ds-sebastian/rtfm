@@ -1,78 +1,79 @@
-# README for RTFM Q&A Streamlit Application
+# RTFM - RAG This For Me
 
-## Overview
-The RTFM Q&A Streamlit application is a conversational question-answering (QA) system designed to fetch, preprocess, and utilize documentation from ReadTheDocs websites for generating answers. It leverages the power of OpenAI's language models and document retrieval techniques to provide users with accurate and contextually relevant answers based on the provided documentation.
+RTFM is a modular web application that uses Retrieval Augmented Generation (RAG) to enable interactive question-answering based on a given data source. The app alleows users to provide a link to a data source (such as a ReadTheDocs website or a GitHub repository), which is then loaded into a vector database for efficient similarity search. Users can ask questions related to the loaded data, and the app retrieves relevant references from the vector database and sends them to a configured language model (LLM) to generate informative answers.
 
 ## Features
-- **Dynamic Documentation Loading**: Allows users to specify the URL of a ReadTheDocs website from which the documentation is downloaded and processed.
-- **Configurable Preprocessing**: Includes settings for chunk size and chunk overlap to customize how documents are split into manageable pieces.
-- **Advanced Retrieval System**: Utilizes a Postgres-based vector search engine (PGVecto_rs) for efficient document retrieval based on query similarity.
-- **Interactive Q&A Interface**: Offers a user-friendly chat interface for asking questions and receiving answers, complete with references to the source documentation.
+
+- Modular architecture allowing easy integration of different databases, models, and data loaders through plugin-style `.py` files
+- Supports various data sources, including ReadTheDocs websites and GitHub repositories
+- Utilizes vector databases for efficient similarity search and retrieval of relevant references
+- Integrates with powerful language models to generate informative answers based on retrieved references
+- User-friendly web interface built with Streamlit for easy interaction and configuration
 
 ## Installation
 
-### Prerequisites
-- Python 3.8+
-- Pipenv or virtualenv (recommended for managing dependencies)
-- Access to an OpenAI API key
-- A PostgreSQL database for storing document vectors
+1. Clone the repository:
 
-### Steps
-1. **Clone the repository**:
-   ```
-   git clone <repository-url>
-   cd <repository-name>
-   ```
+```
+git clone https://github.com/yourusername/rtfm-qa-app.git
+cd rtfm-qa-app
+```
 
-2. **Setup a virtual environment** (optional, but recommended):
-   - With virtualenv:
-     ```
-     python -m venv venv
-     source venv/bin/activate
-     ```
-   - With Pipenv:
-     ```
-     pipenv shell
-     ```
+2. Create a new conda environment using the provided `environment.yml` file:
 
-3. **Install dependencies**:
-   - With pip:
-     ```
-     pip install -r requirements.txt
-     ```
-   - With Pipenv:
-     ```
-     pipenv install
-     ```
+```
+conda env create -f environment.yml
+```
 
-4. **Environment Variables**: Create a `.env` file in the root directory with the following variables:
-   ```
-   API_KEY=<Your OpenAI API Key>
-   API_URL=<OpenAI API URL>
-   CONNECTION_STRING=<PostgreSQL Connection String>
-   MODELS=<Comma-separated list of model names>
-   ```
-   
-5. **Initialize the Database**: Ensure your PostgreSQL database is running and accessible through the `CONNECTION_STRING` specified in the `.env` file.
+3. Activate the conda environment:
+
+```
+conda activate rtfm-qa-app
+```
+
+4. Set the required environment variables:
+
+```
+export API_KEY=your_api_key
+export API_URL=your_api_url
+export CONNECTION_STRING=your_database_connection_string
+export MODELS=model1,model2,model3
+```
+
+5. Run the app:
+
+```
+streamlit run app.py
+```
 
 ## Usage
 
-1. **Start the Streamlit application**:
-   ```
-   streamlit run script.py
-   ```
+1. Open the app in your web browser (usually at `http://localhost:8501`).
 
-2. **Interact with the Application**:
-   - The sidebar allows you to enter the URL of a ReadTheDocs website, select the model, and adjust preprocessing and retriever settings.
-   - Click the "Refresh" button in the sidebar after changing the ReadTheDocs URL or settings to reprocess the documentation.
-   - Use the chat input box at the bottom to ask questions and receive answers based on the loaded documentation.
+2. In the sidebar, enter the URL of the data source you want to load (e.g., a ReadTheDocs website or a GitHub repository).
 
-## Key Functions
+3. Click the "Load Data" button to fetch and process the data from the specified source. The data will be loaded into the vector database.
 
-- `download_readthedocs(url, directory)`: Downloads HTML files from a specified ReadTheDocs URL.
-- `load_readthedocs(directory)`: Loads and parses the downloaded HTML files.
-- `split_documents(docs, chunk_size, chunk_overlap)`: Splits documents into chunks based on the specified size and overlap.
-- `setup_retriever(texts)`: Initializes the document retriever with the processed texts.
-- `setup_qa_chain(_retriever, model_name)`: Sets up the QA chain with the given language model and retriever.
-- `preprocess_data()`: Orchestrates the downloading, loading, splitting, and retrieval setup processes.
+4. Once the data is loaded, you can start asking questions related to the loaded data in the chat interface.
 
+5. The app will retrieve relevant references from the vector database based on your question and send them to the configured LLM to generate an informative answer.
+
+6. The answer, along with the retrieved references, will be displayed in the chat interface.
+
+## Configuration
+
+The app's behavior can be configured through the settings in the sidebar:
+
+- **Select Model**: Choose the language model to use for generating answers.
+- **Preprocessing Settings**: Adjust the chunk size and overlap for splitting the loaded data into smaller segments.
+- **Retriever Settings**: Configure the distance metric, fetch count, and number of references to retrieve from the vector database.
+
+## Customization
+
+To extend or customize the app, you can add new data loaders, vector databases, or language models by creating the appropriate `.py` files in the corresponding directories:
+
+- **Data Loaders**: Add new data loaders in the `data_loaders` directory.
+- **Vector Databases**: Add new vector databases in the `vector_stores` directory.
+- **Language Models**: Add new language models in the `qa_models` directory.
+
+Make sure to follow the existing structure and inherit from the respective base classes to ensure compatibility with the app's modular architecture.
