@@ -3,6 +3,7 @@
 import logging
 import sys
 
+import streamlit as st
 from langchain.text_splitter import CharacterTextSplitter
 
 from data_loaders.factory import get_data_loader
@@ -77,16 +78,26 @@ class QAChain:
             retriever=retriever, model_name=settings.model_name
         )
 
-    def process_question(self, question, chat_history, qa):
-        logger.info(f"Processing question: {question}")
-
+    def process_question(self, question):
         try:
-            result = qa.invoke({"question": question, "chat_history": chat_history})
-            response = result["answer"]
-            references = result["source_documents"]
+            qa = st.session_state.qa_chain  # Retrieve qa_chain from session state
+            if qa is None:
+                st.warning(
+                    "Data not loaded. Please click 'Load Data' before asking a question."
+                )
+            else:
+                result = qa(
+                    {
+                        "question": question,
+                        "chat_history": st.session_state.chat_history,
+                    }
+                )
+                response = result["answer"]
+                references = result["source_documents"]
+                return response, references
 
-            logger.info(f"Generated response: {response}")
-            return response, references
         except Exception as e:
-            logger.error(f"Error in process_question: {e}")
-            raise
+            logger.error(f"Error processing question: {e}")
+            st.error(
+                "An error occurred while processing the question. Please try again."
+            )

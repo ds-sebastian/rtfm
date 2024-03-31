@@ -61,24 +61,14 @@ class UI:
     def display_chat_interface(self):
         self.display_chat_history()
 
-        question = st.chat_input("Ask a question about the Docs:", key="question_input")
-
-        if question:
-            st.session_state.chat_history.append(("user", question))
-
-            if not st.session_state.data_loaded:
-                st.warning("Please load the data first before attempting to chat.")
-            else:
-                response, references = st.session_state.qa_chain.process_question(
-                    question, st.session_state.chat_history, st.session_state.qa_chain
-                )
-                st.session_state.chat_history.append(("assistant", response))
-                st.session_state.references = references
-
     def display_chat_history(self):
         for message in st.session_state.chat_history:
             with st.chat_message(message[0]):
                 st.markdown(message[1])
+
+    def display_user_message(self, message):
+        with st.chat_message("user"):
+            st.markdown(message)
 
     def display_assistant_response(self, response):
         with st.chat_message("assistant"):

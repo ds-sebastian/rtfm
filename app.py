@@ -36,21 +36,24 @@ def load_data():
 
 def process_question(question):
     try:
-        qa = st.session_state.qa  # Retrieve qa from session state
+        qa = st.session_state.qa_chain  # Retrieve qa_chain from session state
         if qa is None:
             st.warning(
                 "Data not loaded. Please click 'Load Data' before asking a question."
             )
+            return None, None
         else:
-            response, references = qa_chain.process_question(
-                question, st.session_state.chat_history, qa
+            result = qa(
+                {"question": question, "chat_history": st.session_state.chat_history}
             )
-            st.session_state.chat_history.append(("user", question))
-            st.session_state.chat_history.append(("assistant", response))
-            st.session_state.references = references
+            response = result["answer"]
+            references = result["source_documents"]
+            return response, references
+
     except Exception as e:
         logger.error(f"Error processing question: {e}")
         st.error("An error occurred while processing the question. Please try again.")
+        return None, None
 
 
 def main():
@@ -66,6 +69,18 @@ def main():
 
     # Display chat interface
     ui.display_chat_interface()
+
+    question = st.chat_input("Ask a question about the Docs:", key="question_input")
+
+    if question:
+        response, references = process_question(question)
+        if response is not None and references is not None:
+            st.session_state.chat_history.append(("user", question))
+            st.session_state.chat_history.append(("assistant", response))
+            st.session_state.references = references
+            ui.display_user_message(question)
+            ui.display_assistant_response(response)
+            st.rerun()  # Trigger a rerun of the app
 
 
 if __name__ == "__main__":
