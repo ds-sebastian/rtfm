@@ -1,6 +1,6 @@
 # RTFM - RAG This For Me
 
-RTFM is a modular web application that uses Retrieval Augmented Generation (RAG) to enable interactive question-answering based on a given data source. The app alleows users to provide a link to a data source (such as a ReadTheDocs website or a GitHub repository), which is then loaded into a vector database for efficient similarity search. Users can ask questions related to the loaded data, and the app retrieves relevant references from the vector database and sends them to a configured language model (LLM) to generate informative answers.
+RTFM is a modular web application that uses Retrieval Augmented Generation (RAG) to enable interactive question-answering based on a given data source. The app allows users to provide a link to a data source (such as a ReadTheDocs website or a GitHub repository), which is then loaded into a vector database for efficient similarity search. Users can ask questions related to the loaded data, and the app retrieves relevant references from the vector database and sends them to a configured language model (LLM) to generate informative answers.
 
 
 
